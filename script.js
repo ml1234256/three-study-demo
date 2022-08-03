@@ -9,12 +9,13 @@ const mesh = new THREE.Mesh(geometry, material)
 
 scene.add(mesh)
 
-// create camera 相机
+
 const sizes = {
-    width: 800,
-    height: 600
+    width: window.innerWidth,
+    height: window.innerHeight
 }
 
+// create camera 相机
 const camera = new THREE.PerspectiveCamera(75, sizes.width/sizes.height)
 camera.position.z = 3
 camera.position.x = 0
@@ -72,3 +73,27 @@ tick()
 // }
 
 // tick()
+
+// 设置画布缩放和网页全屏
+window.addEventListener('resize', () => {
+    // update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
+    
+    // update camera 
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
+
+    // update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+
+// 双击进入全屏，双击退出全屏
+window.addEventListener('dblclick', () => {
+    if(!document.fullscreenElement){
+        canvas.requestFullscreen()
+    } else {
+        document.exitFullscreen()
+    }
+})
